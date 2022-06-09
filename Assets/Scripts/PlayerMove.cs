@@ -30,9 +30,9 @@ public class PlayerMove : MonoBehaviour
     public AnimationClip animationClipWalk = null;
     public AnimationClip animationClipRun = null;
     public AnimationClip animationClipAtk_1 = null;
-    public AnimationClip animationClipAtk_2 = null;
-    public AnimationClip animationClipAtk_3 = null;
-    public AnimationClip animationClipAtk_4 = null;
+    //public AnimationClip animationClipAtk_2 = null;
+    //public AnimationClip animationClipAtk_3 = null;
+    //public AnimationClip animationClipAtk_4 = null;
 
     //animation component 캐싱 준비
     private Animation animationPlayer = null;
@@ -78,16 +78,16 @@ public class PlayerMove : MonoBehaviour
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipRun.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipAtk_1.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtk_2.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtk_3.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtk_4.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtk_2.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtk_3.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtk_4.name].wrapMode = WrapMode.Once;
 
         //animationPlayer[skillAnimClip.name].wrapMode = WrapMode.Once;   
 
         SetAnimationEvent(animationClipAtk_1, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtk_2, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtk_3, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtk_4, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtk_2, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtk_3, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtk_4, "OnPlayerAttackFinshed");
 
         //SetAnimationEvent(skillAnimClip, "OnSkillAnimFinished");
     }
@@ -194,8 +194,8 @@ public class PlayerMove : MonoBehaviour
     /// <param name="clip">애니메이션 클립</param>
     void playAnimationByClip(AnimationClip clip)
     {
-        //animationPlayer.clip = clip;
-        //animationPlayer.GetClip(clip.name);
+        animationPlayer.clip = clip;
+        animationPlayer.GetClip(clip.name);
         animationPlayer.CrossFade(clip.name);
     }
 
@@ -280,33 +280,33 @@ public class PlayerMove : MonoBehaviour
             {
                 //플레이어 상태가 공격일 때 
                 //공격 상태에 따른 분류
-                switch (playerAttackState)
-                {
-                    case PlayerAttackState.atkStep_1:
-                        if (animationPlayer[animationClipAtk_2.name].normalizedTime > 0.1f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    case PlayerAttackState.atkStep_2:
-                        if (animationPlayer[animationClipAtk_3.name].normalizedTime > 0.1f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    case PlayerAttackState.atkStep_3:
-                        if (animationPlayer[animationClipAtk_4.name].normalizedTime > 0.1f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    case PlayerAttackState.atkStep_4:
-                        if (animationPlayer[animationClipAtk_1.name].normalizedTime > 0.1f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                }
+                //switch (playerAttackState)
+                //{
+                //    case PlayerAttackState.atkStep_1:
+                //        if (animationPlayer[animationClipAtk_2.name].normalizedTime > 0.1f)
+                //        {
+                //            flagNextAttack = true;
+                //        }
+                //        break;
+                //    case PlayerAttackState.atkStep_2:
+                //        if (animationPlayer[animationClipAtk_3.name].normalizedTime > 0.1f)
+                //        {
+                //            flagNextAttack = true;
+                //        }
+                //        break;
+                //    case PlayerAttackState.atkStep_3:
+                //        if (animationPlayer[animationClipAtk_4.name].normalizedTime > 0.1f)
+                //        {
+                //            flagNextAttack = true;
+                //        }
+                //        break;
+                //    case PlayerAttackState.atkStep_4:
+                //        if (animationPlayer[animationClipAtk_1.name].normalizedTime > 0.1f)
+                //        {
+                //            flagNextAttack = true;
+                //        }
+                //        break;
+                //}
             }
         }
     }
@@ -374,15 +374,15 @@ public class PlayerMove : MonoBehaviour
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtk_1);
                 break;
-            case PlayerAttackState.atkStep_2:
-                playAnimationByClip(animationClipAtk_2);
-                break;
-            case PlayerAttackState.atkStep_3:
-                playAnimationByClip(animationClipAtk_3);
-                break;
-            case PlayerAttackState.atkStep_4:
-                playAnimationByClip(animationClipAtk_4);
-                break;
+            //case PlayerAttackState.atkStep_2:
+            //    playAnimationByClip(animationClipAtk_2);
+            //    break;
+            //case PlayerAttackState.atkStep_3:
+            //    playAnimationByClip(animationClipAtk_3);
+            //    break;
+            //case PlayerAttackState.atkStep_4:
+            //    playAnimationByClip(animationClipAtk_4);
+            //    break;
         }
     }
     private float gravity = 9.8f;

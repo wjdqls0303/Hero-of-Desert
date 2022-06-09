@@ -76,7 +76,7 @@ public class EnemyMove : MonoBehaviour
     /// </summary>
     void Refresh()
     {
-        transform.position = new Vector3(0, transform.position.y + 1, 0) ;
+        transform.position = new Vector3(0, 15, 0) ;
     }
 
     /// <summary>
