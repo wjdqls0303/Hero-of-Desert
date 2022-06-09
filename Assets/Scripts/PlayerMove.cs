@@ -96,11 +96,12 @@ public class PlayerMove : MonoBehaviour
     {
         Move();
         gravitySet();
-        Debug.Log(GetVelocitySpd());
+        //Debug.Log(GetVelocitySpd());
         BodyDirectionChange();
         AnimationClipCtrl();
         ckAnimationState();
         InputAttackCtrl();
+        AtkComponentCtrl();
     }
     /// <summary>
     /// 캐릭터 이동 함수
@@ -412,5 +413,19 @@ public class PlayerMove : MonoBehaviour
 
         //끝났으면 대기 상태로 둔다.
         playerState = PlayerState.Idle;
+    }
+    void AtkComponentCtrl()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Atk:
+                //AtkTrailRenderer.enabled = true;
+                AtkCapsuleCollider.enabled = true;
+                break;
+            default:
+                //AtkTrailRenderer.enabled = false;
+                AtkCapsuleCollider.enabled = false;
+                break;
+        }
     }
 }
