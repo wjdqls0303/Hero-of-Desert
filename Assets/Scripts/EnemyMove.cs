@@ -8,6 +8,7 @@ public class EnemyMove : MonoBehaviour
     private float Delaysecond = 1.11f;
     private float posY = 0.5f;
     public string targetTag = string.Empty;
+    public string GrenadeTag = string.Empty;
     //좀비 상태
     public enum ZombieState { None, Idle, Move, Wait, GoTarget, Atk, Die }
 
@@ -365,24 +366,29 @@ public class EnemyMove : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //만약에 좀비이 캐릭터 공격에 맞았다면
-        if (collision.gameObject.CompareTag(targetTag) == true)
+        if (collision.gameObject.CompareTag(targetTag))
         {
-            //Debug.Log("Atk");
             //좀비 체력을 10빼고
             hp -= 10;
             if (hp > 0)
-            {
-                //피격 이벤트
                 Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
-
-                //피격 트위닝 이펙트
-                //effectDamageTween();
-            }
             else
             {
-                //0 보다 작으면 좀비이 죽음 상태로 바꾸어라
                 zombieState = ZombieState.Die;
-                gameObject.SendMessageUpwards("AddGold", gameObject, SendMessageOptions.DontRequireReceiver);
+                PlayerMove.Instance.playerGold += enemyGold;
+            }
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(GrenadeTag))
+        {
+            hp -= 30;
+            if (hp > 0)
+                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
+            else
+            {
+                zombieState = ZombieState.Die;
                 PlayerMove.Instance.playerGold += enemyGold;
             }
         }

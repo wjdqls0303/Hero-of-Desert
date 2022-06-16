@@ -5,6 +5,8 @@ using UnityEngine;
 public class cactusGrenadeCtrl : MonoBehaviour
 {
     public float throwSpd = 3f;
+    public string enemyTag = string.Empty;
+    public float waitingTime = 0f;
     void Start()
     {
         
@@ -14,5 +16,9 @@ public class cactusGrenadeCtrl : MonoBehaviour
     void Update()
     {
         
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);
     }
 }

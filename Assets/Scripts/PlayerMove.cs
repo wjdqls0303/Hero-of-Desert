@@ -347,18 +347,10 @@ public class PlayerMove : MonoBehaviour
         }
 
         //생성할 위치를 지정한다. 초기 높이만 1000 나머지 .x,z는 랜덤 
-        Vector3 vecSpawn = new Vector3(Random.Range(-rndPos, rndPos), 1000f, Random.Range(-rndPos, rndPos));
+        Vector3 vecSpawn = new Vector3(Random.Range(-rndPos, rndPos), 100f, Random.Range(-rndPos, rndPos));
 
         //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
         Ray ray = new Ray(vecSpawn, Vector3.down);
-
-        //Raycast 정보 가져오기
-        RaycastHit raycastHit = new RaycastHit();
-        if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity) == true)
-        {
-            //Raycast 높이를 y값으로 재설정
-            vecSpawn.y = raycastHit.point.y;
-        }
 
         //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
         GameObject newMonster = Instantiate(cactusGrenadeIns, vecSpawn, Quaternion.identity);

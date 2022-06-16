@@ -220,7 +220,7 @@ MonoBehaviour:
   AtkCapsuleCollider: {fileID: 1748130990}
   playerGold: 0
   cactusGrenadeIns: {fileID: 7667763094302891911, guid: cd06177fdb67f234d9387ec187711c5e, type: 3}
-  cactusGrenade: 0
+  cactusGrenade: 100
   Items: []
   spawnMaxCnt: 50
 --- !u!111 &269291946
@@ -1166,7 +1166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968096790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -125, y: -3, z: -125}
+  m_LocalPosition: {x: -125, y: -10.1, z: -125}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
