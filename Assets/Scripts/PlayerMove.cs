@@ -48,6 +48,52 @@ public class PlayerMove : MonoBehaviour
 
     [Header("캐릭터 속성")]
     public float playerGold = 0f;
+
+    [Header("아이템 속성")]
+    public GameObject cactusGrenadeIns = null;
+    public float cactusGrenade = 0f;
+    //생성활 몬스터들 담아놓기
+    public List<GameObject> Items = new List<GameObject>();
+    //생성할 몬스터 최대수
+    public int spawnMaxCnt = 50;
+    //생성할 몬스터 랜덤 좌표 (x,z)위치
+    float rndPos = 10f;
+
+    private static PlayerMove instance;
+    public static PlayerMove Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                var obj = FindObjectOfType<PlayerMove>();
+                if (obj != null)
+                {
+                    instance = obj;
+                }
+                else
+                {
+                    var newSingleton = new GameObject("Singleton Class").AddComponent<PlayerMove>();
+                    instance = newSingleton;
+                }
+            }
+            return instance;
+        }
+        private set
+        {
+            instance = value;
+        }
+    }
+    private void Awake()
+    {
+        var objs = FindObjectsOfType<PlayerMove>();
+        if (objs.Length != 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         //CharacterController 캐싱
@@ -77,6 +123,7 @@ public class PlayerMove : MonoBehaviour
         InputAttackCtrl();
         AtkComponentCtrl();
         ckAnimationState();
+        ItemNum();
     }
     /// <summary>
     /// 캐릭터 이동 함수
@@ -275,16 +322,55 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void AddGold()
+    void ItemNum()
     {
-        Debug.Log("12333");
-        playerGold += 10f;
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if(cactusGrenade <= 0f)
+            {
+                Debug.Log("아이템이 없습니다!");
+            }
+            else
+            {
+                Spawn();
+                Debug.Log("아이템을 사용했습니다!");
+                cactusGrenade -= 1f;
+            }
+        }
+    }
+
+    void Spawn()
+    {
+        if (Items.Count >= spawnMaxCnt)
+        {
+            return;
+        }
+
+        //생성할 위치를 지정한다. 초기 높이만 1000 나머지 .x,z는 랜덤 
+        Vector3 vecSpawn = new Vector3(Random.Range(-rndPos, rndPos), 1000f, Random.Range(-rndPos, rndPos));
+
+        //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
+        Ray ray = new Ray(vecSpawn, Vector3.down);
+
+        //Raycast 정보 가져오기
+        RaycastHit raycastHit = new RaycastHit();
+        if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity) == true)
+        {
+            //Raycast 높이를 y값으로 재설정
+            vecSpawn.y = raycastHit.point.y;
+        }
+
+        //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
+        GameObject newMonster = Instantiate(cactusGrenadeIns, vecSpawn, Quaternion.identity);
+
+        //몬스터 목록에 새로운 몬스터를 추가
+        Items.Add(newMonster);
     }
 
     private void OnGUI()
     {
         var labelStyle = new GUIStyle();
-        labelStyle.fontSize = 20;
+        labelStyle.fontSize = 50;
         labelStyle.normal.textColor = Color.yellow;
         //현재 캐릭터 골드
         GUILayout.Label("캐릭터 골드 : " + playerGold.ToString(), labelStyle);

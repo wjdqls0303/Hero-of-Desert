@@ -53,17 +53,19 @@
     <UnityVersion>2020.3.25f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\MouseMove.cs" />
+    <Compile Include="Assets\MeleeWeaponTrail\Scripts\MeleeWeaponTrail.cs" />
+    <Compile Include="Assets\MeleeWeaponTrail\Scripts\Interpolate.cs" />
+    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\LookAtTarget.cs" />
+    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\SwooshTest.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\HOTween\_Demo\HOTweenDemoBrain.cs" />
     <Compile Include="Assets\Scripts\EnemyDetector.cs" />
-    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\SwooshTest.cs" />
-    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\MouseMove.cs" />
-    <Compile Include="Assets\MeleeWeaponTrail\Scripts\Interpolate.cs" />
-    <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\LookAtTarget.cs" />
-    <Compile Include="Assets\MeleeWeaponTrail\Scripts\MeleeWeaponTrail.cs" />
+    <Compile Include="Assets\Scripts\MarketCtrl.cs" />
+    <Compile Include="Assets\Scripts\cactusGrenadeCtrl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Free Low Poly Desert Pack\Materials\Shaders\Vertex_Color_Unlit.shader" />

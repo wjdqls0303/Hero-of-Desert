@@ -211,7 +211,7 @@ public class EnemyMove : MonoBehaviour
                         //대기 동작 함수를 호출
                         StartCoroutine(setWait());
                         //여기서 끝냄
-                        Debug.Log("111");
+                        //Debug.Log("111");
                         setIdle();
                         return;
                     }
@@ -383,6 +383,7 @@ public class EnemyMove : MonoBehaviour
                 //0 보다 작으면 좀비이 죽음 상태로 바꾸어라
                 zombieState = ZombieState.Die;
                 gameObject.SendMessageUpwards("AddGold", gameObject, SendMessageOptions.DontRequireReceiver);
+                PlayerMove.Instance.playerGold += enemyGold;
             }
         }
     }
