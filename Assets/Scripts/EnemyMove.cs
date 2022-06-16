@@ -7,6 +7,7 @@ public class EnemyMove : MonoBehaviour
 {
     private float Delaysecond = 1.11f;
     private float posY = 0.5f;
+    public string targetTag = string.Empty;
     //좀비 상태
     public enum ZombieState { None, Idle, Move, Wait, GoTarget, Atk, Die }
 
@@ -39,27 +40,31 @@ public class EnemyMove : MonoBehaviour
     public int hp = 100;
     //좀비 공격 거리
     public float AtkRange = 1.5f;
+    //좀비 감지거리
+    public float DetectorRange = 10.0f;
     //좀비 피격 이펙트
     public GameObject effectDamage = null;
     //좀비 다이 이펙트
     public GameObject effectDie = null;
 
     private Tweener effectTweener = null;
-    private SkinnedMeshRenderer skinnedMeshRenderer = null;
+
+    [Header("캐릭터 속성")]
+    public float enemyGold = 10f;
 
     void OnAtkAnmationFinished()
     {
-        Debug.Log("Atk Animation finished");
+        //Debug.Log("Atk Animation finished");
     }
 
     void OnDmgAnmationFinished()
     {
-        Debug.Log("Dmg Animation finished");
+        //Debug.Log("Dmg Animation finished");
     }
 
     void OnDieAnmationFinished()
     {
-        Debug.Log("Die Animation finished");
+        //Debug.Log("Die Animation finished");
         StartCoroutine(Die());
     }
 
@@ -76,7 +81,9 @@ public class EnemyMove : MonoBehaviour
     /// </summary>
     void Refresh()
     {
-        transform.position = new Vector3(0, 15, 0) ;
+        float posX = Random.Range(10f, -10f);
+        float posZ = Random.Range(10f, -10f);
+        transform.position = new Vector3(posX, 15, posZ);
     }
 
     /// <summary>
@@ -120,9 +127,6 @@ public class EnemyMove : MonoBehaviour
         //공격 애니메이션 이벤트 추가
         OnAnimationEvent(AtkAnimClip, "OnAtkAnmationFinished");
         OnAnimationEvent(DieAnimClip, "OnDieAnmationFinished");
-
-        //스킨매쉬 캐싱
-        skinnedMeshRenderer = ZombieTransform.Find("UD_light_infantry").GetComponent<SkinnedMeshRenderer>();
     }
 
     /// <summary>
@@ -163,7 +167,7 @@ public class EnemyMove : MonoBehaviour
         if (targetCharactor == null)
         {
             posTarget = new Vector3(ZombieTransform.position.x + Random.Range(-10f, 10f),
-                                    ZombieTransform.position.y + 1000f,
+                                    ZombieTransform.position.y,
                                     ZombieTransform.position.z + Random.Range(-10f, 10f)
                 );
             Ray ray = new Ray(posTarget, Vector3.down);
@@ -207,6 +211,8 @@ public class EnemyMove : MonoBehaviour
                         //대기 동작 함수를 호출
                         StartCoroutine(setWait());
                         //여기서 끝냄
+                        Debug.Log("111");
+                        setIdle();
                         return;
                     }
 
@@ -238,6 +244,12 @@ public class EnemyMove : MonoBehaviour
                                             ZombieTransform.position.y,
                                             targetCharactor.transform.position.z);
                 }
+                //if (distance.magnitude > DetectorRange)
+                //{
+                //    targetCharactor = null;
+                //    targetTransform = null;
+                //    posTarget = Vector3.zero;
+                //}
                 break;
             default:
                 break;
@@ -272,7 +284,7 @@ public class EnemyMove : MonoBehaviour
         //대기 시간을 넣어 준.
         yield return new WaitForSeconds(timeWait);
         //대기 후 다시 준비 상태로 변경
-        zombieState = ZombieState.Idle;
+        zombieState = ZombieState.Move;
     }
 
     /// <summary>
@@ -350,51 +362,28 @@ public class EnemyMove : MonoBehaviour
     /// 좀비 피격 충돌 검출
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         //만약에 좀비이 캐릭터 공격에 맞았다면
-        if (other.gameObject.CompareTag("PlayerAtk") == true)
+        if (collision.gameObject.CompareTag(targetTag) == true)
         {
+            //Debug.Log("Atk");
             //좀비 체력을 10빼고
             hp -= 10;
             if (hp > 0)
             {
                 //피격 이벤트
-                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
+                Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
 
                 //피격 트위닝 이펙트
-                effectDamageTween();
+                //effectDamageTween();
             }
             else
             {
                 //0 보다 작으면 좀비이 죽음 상태로 바꾸어라
                 zombieState = ZombieState.Die;
+                gameObject.SendMessageUpwards("AddGold", gameObject, SendMessageOptions.DontRequireReceiver);
             }
         }
-    }
-
-    void effectDamageTween()
-    {
-        //트윈을 돌리다 또 트윈 함수가 진행되면 로직이 엉망이 될 수 있어서
-        //트윈 중복 ㅔㅊ크로 미리 차단을 해준다
-        if (effectTweener != null && effectTweener.isComplete == false)
-        {
-            return;
-        }
-
-        //번쩍이는 이펙트 색상을 지정해준다
-        Color colorTO = Color.red;
-
-        //트윈의 타겟은 스킨매쉬랜더러, 시간은 0.2초, 파라메터로는 색상, 반복. 콜백함수
-        effectTweener = HOTween.To(skinnedMeshRenderer, 0.2f, new TweenParms()
-            .Prop("color", colorTO)
-            .Loops(1, LoopType.Yoyo)
-            .OnStepComplete(OnDamageTweenFinished));
-    }
-
-    void OnDamageTweenFinished()
-    {
-        //트윈이 끝나면 하얀색으로 확실히 색상을 돌려준다
-        skinnedMeshRenderer.material.color = Color.white;
     }
 }

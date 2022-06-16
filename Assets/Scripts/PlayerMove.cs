@@ -30,9 +30,6 @@ public class PlayerMove : MonoBehaviour
     public AnimationClip animationClipWalk = null;
     public AnimationClip animationClipRun = null;
     public AnimationClip animationClipAtk_1 = null;
-    //public AnimationClip animationClipAtk_2 = null;
-    //public AnimationClip animationClipAtk_3 = null;
-    //public AnimationClip animationClipAtk_4 = null;
 
     //animation component 캐싱 준비
     private Animation animationPlayer = null;
@@ -42,15 +39,6 @@ public class PlayerMove : MonoBehaviour
     [Header("캐릭터 상태")]
     public PlayerState playerState = PlayerState.None;
 
-    //공격 상태
-    public enum PlayerAttackState { atkStep_1, atkStep_2, atkStep_3, atkStep_4 }
-
-    [Header("공격 상태")]
-    public PlayerAttackState playerAttackState = PlayerAttackState.atkStep_1;
-
-    //다음 연계 공격 활성화 여부를 확인하기 위해 flag 설정
-    public bool flagNextAttack = false;
-
     [Header("전투관련")]
     //공격할 때만 켜지게
     public TrailRenderer AtkTrailRenderer = null;
@@ -58,9 +46,8 @@ public class PlayerMove : MonoBehaviour
     //무기에 있는 콜라이더 캐싱
     public CapsuleCollider AtkCapsuleCollider = null;
 
-    [Header("스킬관련")]
-    public AnimationClip skillAnimClip = null;
-    public GameObject skillEffect = null;
+    [Header("캐릭터 속성")]
+    public float playerGold = 0f;
     void Start()
     {
         //CharacterController 캐싱
@@ -78,30 +65,18 @@ public class PlayerMove : MonoBehaviour
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipRun.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipAtk_1.name].wrapMode = WrapMode.Once;
-        //animationPlayer[animationClipAtk_2.name].wrapMode = WrapMode.Once;
-        //animationPlayer[animationClipAtk_3.name].wrapMode = WrapMode.Once;
-        //animationPlayer[animationClipAtk_4.name].wrapMode = WrapMode.Once;
-
-        //animationPlayer[skillAnimClip.name].wrapMode = WrapMode.Once;   
 
         SetAnimationEvent(animationClipAtk_1, "OnPlayerAttackFinshed");
-        //SetAnimationEvent(animationClipAtk_2, "OnPlayerAttackFinshed");
-        //SetAnimationEvent(animationClipAtk_3, "OnPlayerAttackFinshed");
-        //SetAnimationEvent(animationClipAtk_4, "OnPlayerAttackFinshed");
-
-        //SetAnimationEvent(skillAnimClip, "OnSkillAnimFinished");
     }
 
     void Update()
     {
         Move();
         gravitySet();
-        //Debug.Log(GetVelocitySpd());
         BodyDirectionChange();
-        AnimationClipCtrl();
-        ckAnimationState();
         InputAttackCtrl();
         AtkComponentCtrl();
+        ckAnimationState();
     }
     /// <summary>
     /// 캐릭터 이동 함수
@@ -171,23 +146,6 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    //private void OnGUI()
-    //{
-    //    if (characterCtrl != null && characterCtrl.velocity != Vector3.zero)
-    //    {
-    //        var labelStyle = new GUIStyle();
-    //        labelStyle.fontSize = 30;
-    //        labelStyle.normal.textColor = Color.white;
-    //        //현재 속도
-    //        float _getVelocity = GetVelocitySpd();
-    //        GUILayout.Label("현재속도 : " + _getVelocity.ToString(), labelStyle);
-    //        //현재 캐릭터 방향
-    //        GUILayout.Label("현재 방향 : " + characterCtrl.velocity.ToString(), labelStyle);
-    //        //현재 캐릭터 속도
-    //        GUILayout.Label("캐릭터 속도 : " + CurrentVelocitySpd.magnitude.ToString(), labelStyle);
-    //    }
-    //}
-
     /// <summary>
     /// 애니메이션 재생 함수
     /// </summary>
@@ -200,27 +158,6 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어 상태에 맞춘 애니메이션을 재생
-    /// </summary>
-    void AnimationClipCtrl()
-    {
-        switch (playerState)
-        {
-            case PlayerState.Idle:
-                playAnimationByClip(animationClipIdle);
-                break;
-            case PlayerState.Walk:
-                playAnimationByClip(animationClipWalk);
-                break;
-            case PlayerState.Run:
-                playAnimationByClip(animationClipRun);
-                break;
-            case PlayerState.Atk:
-                break;
-        }
-    }
-
-    /// <summary>
     /// 상태에 따른 변경해주는 함수
     /// </summary>
     void ckAnimationState()
@@ -229,12 +166,14 @@ public class PlayerMove : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.Idle:
+                playAnimationByClip(animationClipIdle);
                 if (nowSpd > 0.0f)
                 {
                     playerState = PlayerState.Walk;
                 }
                 break;
             case PlayerState.Walk:
+                playAnimationByClip(animationClipWalk);
                 if (nowSpd > 4.5f)
                 {
                     playerState = PlayerState.Run;
@@ -245,6 +184,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 break;
             case PlayerState.Run:
+                playAnimationByClip(animationClipRun);
                 if (nowSpd < 4.5f)
                 {
                     playerState = PlayerState.Walk;
@@ -255,7 +195,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 break;
             case PlayerState.Atk:
-                AtkAnimationCtrl();
+                playAnimationByClip(animationClipAtk_1);
                 break;
         }
     }
@@ -266,48 +206,9 @@ public class PlayerMove : MonoBehaviour
     void InputAttackCtrl()
     {
         //마우스 클릭 감지
-        if (Input.GetMouseButtonDown(0) == true)
+        if (Input.GetMouseButton(0) == true)
         {
-            //플레이어가 공격상태
-            if (playerState != PlayerState.Atk)
-            {
-                //플레이어가 공격상태가 아니면 공격 상태로 만든다
-                playerState = PlayerState.Atk;
-                //공격상태 초기화
-                playerAttackState = PlayerAttackState.atkStep_1;
-            }
-            else
-            {
-                //플레이어 상태가 공격일 때 
-                //공격 상태에 따른 분류
-                //switch (playerAttackState)
-                //{
-                //    case PlayerAttackState.atkStep_1:
-                //        if (animationPlayer[animationClipAtk_2.name].normalizedTime > 0.1f)
-                //        {
-                //            flagNextAttack = true;
-                //        }
-                //        break;
-                //    case PlayerAttackState.atkStep_2:
-                //        if (animationPlayer[animationClipAtk_3.name].normalizedTime > 0.1f)
-                //        {
-                //            flagNextAttack = true;
-                //        }
-                //        break;
-                //    case PlayerAttackState.atkStep_3:
-                //        if (animationPlayer[animationClipAtk_4.name].normalizedTime > 0.1f)
-                //        {
-                //            flagNextAttack = true;
-                //        }
-                //        break;
-                //    case PlayerAttackState.atkStep_4:
-                //        if (animationPlayer[animationClipAtk_1.name].normalizedTime > 0.1f)
-                //        {
-                //            flagNextAttack = true;
-                //        }
-                //        break;
-                //}
-            }
+            playerState = PlayerState.Atk;
         }
     }
 
@@ -316,35 +217,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void OnPlayerAttackFinshed()
     {
-        //만약에 flagNextAttack이 true면
-        if (flagNextAttack == true)
-        {
-            //flagNextAttkack 초기화
-            flagNextAttack = false;
-
-            //현재 공격 애니메이션 상태에 따른 다음 애니메이션 상태값을 넣기
-            switch (playerAttackState)
-            {
-                case PlayerAttackState.atkStep_1:
-                    playerAttackState = PlayerAttackState.atkStep_2;
-                    break;
-                case PlayerAttackState.atkStep_2:
-                    playerAttackState = PlayerAttackState.atkStep_3;
-                    break;
-                case PlayerAttackState.atkStep_3:
-                    playerAttackState = PlayerAttackState.atkStep_4;
-                    break;
-                case PlayerAttackState.atkStep_4:
-                    playerAttackState = PlayerAttackState.atkStep_1;
-                    break;
-            }
-        }
-        else
-        {
-            playerState = PlayerState.Idle;
-
-            playerAttackState = PlayerAttackState.atkStep_1;
-        }
+        playerState = PlayerState.Idle;
     }
 
     /// <summary>
@@ -363,28 +236,6 @@ public class PlayerMove : MonoBehaviour
         clip.AddEvent(newAnimationEvent);
     }
 
-    /// <summary>
-    /// 공격 애니메이션 재생
-    /// </summary>
-    void AtkAnimationCtrl()
-    {
-        //만약 공격상태가?
-        switch (playerAttackState)
-        {
-            case PlayerAttackState.atkStep_1:
-                playAnimationByClip(animationClipAtk_1);
-                break;
-            //case PlayerAttackState.atkStep_2:
-            //    playAnimationByClip(animationClipAtk_2);
-            //    break;
-            //case PlayerAttackState.atkStep_3:
-            //    playAnimationByClip(animationClipAtk_3);
-            //    break;
-            //case PlayerAttackState.atkStep_4:
-            //    playAnimationByClip(animationClipAtk_4);
-            //    break;
-        }
-    }
     private float gravity = 9.8f;
     private float verticalSpd = 0f;
     void gravitySet()
@@ -408,9 +259,6 @@ public class PlayerMove : MonoBehaviour
         //캐릭터 앞 방향 2.0정도 떨어진 거리
         pos += transform.forward * 2f;
 
-        //그 위치에 스킬 이펙트를 붙인다.
-        Instantiate(skillEffect, pos, Quaternion.identity);
-
         //끝났으면 대기 상태로 둔다.
         playerState = PlayerState.Idle;
     }
@@ -419,13 +267,26 @@ public class PlayerMove : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.Atk:
-                //AtkTrailRenderer.enabled = true;
                 AtkCapsuleCollider.enabled = true;
                 break;
             default:
-                //AtkTrailRenderer.enabled = false;
                 AtkCapsuleCollider.enabled = false;
                 break;
         }
+    }
+
+    void AddGold()
+    {
+        Debug.Log("12333");
+        playerGold += 10f;
+    }
+
+    private void OnGUI()
+    {
+        var labelStyle = new GUIStyle();
+        labelStyle.fontSize = 20;
+        labelStyle.normal.textColor = Color.yellow;
+        //현재 캐릭터 골드
+        GUILayout.Label("캐릭터 골드 : " + playerGold.ToString(), labelStyle);
     }
 }

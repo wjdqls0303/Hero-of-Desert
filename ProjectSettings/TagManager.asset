@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerAtk
+  - Detector
   layers:
   - Default
   - TransparentFX
