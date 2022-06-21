@@ -14,7 +14,6 @@ public class MarketCtrl : MonoBehaviour
         
     }
 
-
     void Update()
     {
         OnOff();

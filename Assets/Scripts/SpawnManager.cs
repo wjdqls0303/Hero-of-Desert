@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     public List<GameObject> monsters = new List<GameObject>();
 
     //생성할 몬스터 최대수
-    public int spawnMaxCnt = 50;
+    public int spawnMaxCnt = 5;
 
     //생성할 몬스터 랜덤 좌표 (x,z)위치
     float rndPos = 10f;

@@ -6,7 +6,6 @@ using Holoville.HOTween;
 public class EnemyMove : MonoBehaviour
 {
     private float Delaysecond = 1.11f;
-    private float posY = 0.5f;
     public string targetTag = string.Empty;
     public string GrenadeTag = string.Empty;
     //좀비 상태
@@ -47,8 +46,6 @@ public class EnemyMove : MonoBehaviour
     public GameObject effectDamage = null;
     //좀비 다이 이펙트
     public GameObject effectDie = null;
-
-    private Tweener effectTweener = null;
 
     [Header("캐릭터 속성")]
     public float enemyGold = 10f;

@@ -42,22 +42,22 @@ public class PlayerMove : MonoBehaviour
     [Header("전투관련")]
     //공격할 때만 켜지게
     public TrailRenderer AtkTrailRenderer = null;
+    public string EnemyTag = string.Empty;
 
     //무기에 있는 콜라이더 캐싱
     public CapsuleCollider AtkCapsuleCollider = null;
 
     [Header("캐릭터 속성")]
     public float playerGold = 0f;
+    public float playerHp = 100f;
 
     [Header("아이템 속성")]
     public GameObject cactusGrenadeIns = null;
     public float cactusGrenade = 0f;
-    //생성활 몬스터들 담아놓기
     public List<GameObject> Items = new List<GameObject>();
-    //생성할 몬스터 최대수
     public int spawnMaxCnt = 50;
-    //생성할 몬스터 랜덤 좌표 (x,z)위치
-    float rndPos = 10f;
+    float rndPos = 2f;
+    public Vector3 pos = Vector3.zero;
 
     private static PlayerMove instance;
     public static PlayerMove Instance
@@ -324,9 +324,9 @@ public class PlayerMove : MonoBehaviour
 
     void ItemNum()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if(cactusGrenade <= 0f)
+            if (cactusGrenade <= 0f)
             {
                 Debug.Log("아이템이 없습니다!");
             }
@@ -341,13 +341,14 @@ public class PlayerMove : MonoBehaviour
 
     void Spawn()
     {
+        pos = this.gameObject.transform.position;
         if (Items.Count >= spawnMaxCnt)
         {
             return;
         }
 
         //생성할 위치를 지정한다. 초기 높이만 1000 나머지 .x,z는 랜덤 
-        Vector3 vecSpawn = new Vector3(Random.Range(-rndPos, rndPos), 100f, Random.Range(-rndPos, rndPos));
+        Vector3 vecSpawn = new Vector3(this.transform.position.x * Random.Range(rndPos, -rndPos), 10f, this.transform.position.z + 5);
 
         //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
         Ray ray = new Ray(vecSpawn, Vector3.down);
@@ -366,5 +367,15 @@ public class PlayerMove : MonoBehaviour
         labelStyle.normal.textColor = Color.yellow;
         //현재 캐릭터 골드
         GUILayout.Label("캐릭터 골드 : " + playerGold.ToString(), labelStyle);
+    }
+
+    private void OnCollisionEnter(Collision collider)
+    {
+        if (collider.transform.CompareTag(EnemyTag))
+        {
+            Debug.Log("LLL");
+            playerHp -= 10f;
+
+        }
     }
 }

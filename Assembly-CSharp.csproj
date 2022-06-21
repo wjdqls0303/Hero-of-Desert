@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\HOTween\_Demo\HOTweenDemoBrain.cs" />
     <Compile Include="Assets\Scripts\EnemyDetector.cs" />
+    <Compile Include="Assets\Scripts\FoxMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Free Low Poly Desert Pack\Materials\Shaders\Vertex_Color_Unlit.shader" />
