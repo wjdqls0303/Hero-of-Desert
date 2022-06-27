@@ -59,14 +59,16 @@
     <Compile Include="Assets\MeleeWeaponTrail\Scripts\Interpolate.cs" />
     <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\LookAtTarget.cs" />
     <Compile Include="Assets\Scripts\cactusGrenadeCtrl.cs" />
+    <Compile Include="Assets\Travis Game Assets\Hit Impact Effects\Demo Scene\Scripts\HitImpactEffectsPreview.cs" />
     <Compile Include="Assets\MeleeWeaponTrail\Example\Scripts\SwooshTest.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\SpawnManager.cs" />
+    <Compile Include="Assets\Scripts\FoxMove.cs" />
     <Compile Include="Assets\Scripts\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\HOTween\_Demo\HOTweenDemoBrain.cs" />
     <Compile Include="Assets\Scripts\EnemyDetector.cs" />
-    <Compile Include="Assets\Scripts\FoxMove.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Free Low Poly Desert Pack\Materials\Shaders\Vertex_Color_Unlit.shader" />
@@ -75,6 +77,7 @@
     <None Include="Assets\HOTween\readme.txt" />
     <None Include="Assets\MeleeWeaponTrail\README.txt" />
     <None Include="Assets\HOTween\Plugins\HOTween.XML" />
+    <None Include="Assets\Ground materials FD\Information package.txt" />
     <None Include="Assets\HOTween\Plugins\HOTween.dll" />
   </ItemGroup>
   <ItemGroup>

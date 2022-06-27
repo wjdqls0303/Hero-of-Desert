@@ -46,6 +46,9 @@ public class EnemyMove : MonoBehaviour
     public GameObject effectDamage = null;
     //좀비 다이 이펙트
     public GameObject effectDie = null;
+    //좀비 공격 콜라이더
+    //public CapsuleCollider AtkCapsuleColliderR = null;
+    //public CapsuleCollider AtkCapsuleColliderL = null;
 
     [Header("캐릭터 속성")]
     public float enemyGold = 10f;
@@ -72,6 +75,12 @@ public class EnemyMove : MonoBehaviour
         //아이템 얻기
         Refresh();
         zombieState = ZombieState.Idle;
+    }
+
+    void Destroyed()
+    {
+        Debug.Log("좀비들이 사라집니다.");
+        Destroy(gameObject);
     }
 
     /// <summary>
@@ -155,6 +164,8 @@ public class EnemyMove : MonoBehaviour
     {
         CkState();
         AnimationCtrl();
+        if (SpawnManager.Instance.foxSpawnCheck == true)
+            Destroyed();
     }
 
     /// <summary>
@@ -315,7 +326,7 @@ public class EnemyMove : MonoBehaviour
             case ZombieState.Die:
                 //죽을 때도 애니메이션 실행
                 ZombieAnimation.CrossFade(DieAnimClip.name);
-                OnDieAnmationFinished();
+                    OnDieAnmationFinished();
                 break;
             default:
                 break;
@@ -368,25 +379,15 @@ public class EnemyMove : MonoBehaviour
             //좀비 체력을 10빼고
             hp -= 10;
             if (hp > 0)
+            {
+                Debug.Log("Effect");
                 Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
-            else
-            {
-                zombieState = ZombieState.Die;
-                PlayerMove.Instance.playerGold += enemyGold;
             }
-        }
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(GrenadeTag))
-        {
-            hp -= 30;
-            if (hp > 0)
-                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
             else
             {
                 zombieState = ZombieState.Die;
                 PlayerMove.Instance.playerGold += enemyGold;
+                PlayerMove.Instance.killEnemy += 1;
             }
         }
     }

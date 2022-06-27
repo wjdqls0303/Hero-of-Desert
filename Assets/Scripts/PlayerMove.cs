@@ -54,9 +54,11 @@ public class PlayerMove : MonoBehaviour
     [Header("아이템 속성")]
     public GameObject cactusGrenadeIns = null;
     public float cactusGrenade = 0f;
-    public List<GameObject> Items = new List<GameObject>();
-    public int spawnMaxCnt = 50;
-    float rndPos = 2f;
+    //public List<GameObject> Items = new List<GameObject>();
+    public int currentCnt;
+    public float killEnemy = 0f;
+    public int spawnMaxCnt = 10;
+    public float rndPos = 100f;
     public Vector3 pos = Vector3.zero;
 
     private static PlayerMove instance;
@@ -221,8 +223,9 @@ public class PlayerMove : MonoBehaviour
                 break;
             case PlayerState.Walk:
                 playAnimationByClip(animationClipWalk);
-                if (nowSpd > 4.5f)
+                if (Input.GetKey(KeyCode.LeftShift) == true)
                 {
+                    Debug.Log("뛴다");
                     playerState = PlayerState.Run;
                 }
                 else if (nowSpd < 0.1f)
@@ -232,8 +235,9 @@ public class PlayerMove : MonoBehaviour
                 break;
             case PlayerState.Run:
                 playAnimationByClip(animationClipRun);
-                if (nowSpd < 4.5f)
+                if (Input.GetKey(KeyCode.LeftShift) != true)
                 {
+                    Debug.Log("걷는다");
                     playerState = PlayerState.Walk;
                 }
                 if (nowSpd < 0.1f)
@@ -342,13 +346,14 @@ public class PlayerMove : MonoBehaviour
     void Spawn()
     {
         pos = this.gameObject.transform.position;
-        if (Items.Count >= spawnMaxCnt)
+        if (currentCnt >= spawnMaxCnt)
         {
+
             return;
         }
 
         //생성할 위치를 지정한다. 초기 높이만 1000 나머지 .x,z는 랜덤 
-        Vector3 vecSpawn = new Vector3(this.transform.position.x * Random.Range(rndPos, -rndPos), 10f, this.transform.position.z + 5);
+        Vector3 vecSpawn = new Vector3(this.transform.position.x + Random.Range(rndPos, -rndPos), 10f, this.transform.position.z + Random.Range(rndPos, -rndPos));
 
         //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
         Ray ray = new Ray(vecSpawn, Vector3.down);
@@ -356,26 +361,16 @@ public class PlayerMove : MonoBehaviour
         //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
         GameObject newMonster = Instantiate(cactusGrenadeIns, vecSpawn, Quaternion.identity);
 
-        //몬스터 목록에 새로운 몬스터를 추가
-        Items.Add(newMonster);
+        //아이템 목록에 새로운 몬스터를 추가
+        currentCnt++;
     }
 
-    private void OnGUI()
+    private void OnCollisionEnter(Collision collision)
     {
-        var labelStyle = new GUIStyle();
-        labelStyle.fontSize = 50;
-        labelStyle.normal.textColor = Color.yellow;
-        //현재 캐릭터 골드
-        GUILayout.Label("캐릭터 골드 : " + playerGold.ToString(), labelStyle);
-    }
-
-    private void OnCollisionEnter(Collision collider)
-    {
-        if (collider.transform.CompareTag(EnemyTag))
+        if (collision.transform.CompareTag(EnemyTag))
         {
-            Debug.Log("LLL");
+            Debug.Log("Atk");
             playerHp -= 10f;
-
         }
     }
 }

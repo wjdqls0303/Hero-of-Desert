@@ -37,13 +37,13 @@ public class FoxMove : MonoBehaviour
 
     [Header("전투속성")]
     //여우 체력
-    public int hp = 100;
+    public int hp = 250;
     //여우 공격 거리
-    public float AtkRange = 1.5f;
+    public float AtkRange = 4.5f;
     //여우 감지거리
     public float DetectorRange = 10.0f;
     //여우 피격 이펙트
-    public GameObject effectDamage = null;
+    public Material effectDamage = null;
     //여우 다이 이펙트
     public GameObject effectDie = null;
 
@@ -62,25 +62,13 @@ public class FoxMove : MonoBehaviour
     void OnDieAnmationFinished()
     {
         //Debug.Log("Die Animation finished");
-        StartCoroutine(Die());
+        StartCoroutine(wait());
     }
 
-    IEnumerator Die()
+    IEnumerator wait()
     {
         yield return new WaitForSeconds(Delaysecond);
-        //아이템 얻기
-        Refresh();
-        foxState = FoxState.Idle;
-    }
-
-    /// <summary>
-    /// 여우 재활용
-    /// </summary>
-    void Refresh()
-    {
-        float posX = Random.Range(10f, -10f);
-        float posZ = Random.Range(10f, -10f);
-        transform.position = new Vector3(posX, 15, posZ);
+        Destroy(gameObject);
     }
 
     /// <summary>
@@ -111,7 +99,7 @@ public class FoxMove : MonoBehaviour
         FoxAnimation = GetComponent<Animation>();
         FoxTransform = GetComponent<Transform>();
 
-        //애니메이션 클립 재생 모드 비중
+        //애니메이션 클립 재생 모드 비중 
         FoxAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
         FoxAnimation[MoveAnimClip.name].wrapMode = WrapMode.Loop;
         FoxAnimation[AtkAnimClip.name].wrapMode = WrapMode.Once;
@@ -293,7 +281,6 @@ public class FoxMove : MonoBehaviour
                 FoxAnimation.CrossFade(IdleAnimClip.name);
                 break;
             //랜덤과 목표 이동할 때 애니메이션 같.
-            case FoxState.Move:
             case FoxState.GoTarget:
                 FoxAnimation.CrossFade(MoveAnimClip.name);
                 //이동 애니메이션 실행
@@ -360,27 +347,43 @@ public class FoxMove : MonoBehaviour
         {
             //여우 체력을 10빼고
             hp -= 10;
+            GameManager.Instance.BossHpText(hp);
+            Debug.Log("뺏다");
             if (hp > 0)
-                Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
+                //Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
+                return;
             else
             {
                 foxState = FoxState.Die;
+                Debug.Log("공격당했따");
                 PlayerMove.Instance.playerGold += enemyGold;
             }
         }
     }
-    void OnTriggerEnter(Collider other)
+
+    private static FoxMove instance;
+    public static FoxMove Instance
     {
-        if (other.CompareTag(GrenadeTag))
+        get
         {
-            hp -= 30;
-            if (hp > 0)
-                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
-            else
+            if (instance == null)
             {
-                foxState = FoxState.Die;
-                PlayerMove.Instance.playerGold += enemyGold;
+                var obj = FindObjectOfType<FoxMove>();
+                if (obj != null)
+                {
+                    instance = obj;
+                }
+                else
+                {
+                    var newSingleton = new GameObject("Singleton Class").AddComponent<FoxMove>();
+                    instance = newSingleton;
+                }
             }
+            return instance;
+        }
+        private set
+        {
+            instance = value;
         }
     }
 }

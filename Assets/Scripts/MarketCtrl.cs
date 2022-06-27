@@ -7,12 +7,7 @@ public class MarketCtrl : MonoBehaviour
 {
     public GameObject marketPanel;
     private bool isCanvas = false;
-    private float cactusGrenadeBuyGold = 50f;
-
-    void Start()
-    {
-        
-    }
+    public float cactusGrenadeBuyGold = 50f;
 
     void Update()
     {
@@ -23,22 +18,45 @@ public class MarketCtrl : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            isCanvas = (isCanvas == true) ? isCanvas = false : isCanvas = true;
-            marketPanel.gameObject.SetActive(isCanvas);
+            if (Time.timeScale == 1.0f)
+            {
+                Time.timeScale = 0.0f;
+                isCanvas = (isCanvas == true) ? isCanvas = false : isCanvas = true;
+                marketPanel.gameObject.SetActive(isCanvas);
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                isCanvas = (isCanvas == true) ? isCanvas = false : isCanvas = true;
+                marketPanel.gameObject.SetActive(isCanvas);
+            }
         }
     }
 
-    public void cactusGrenadeBuy()
+    public static MarketCtrl instance;
+
+    public static MarketCtrl Instance
     {
-        if(PlayerMove.Instance.playerGold < cactusGrenadeBuyGold)
+        get
         {
-            Debug.Log("돈이 부족합니다!");
+            if (instance == null)
+            {
+                var obj = FindObjectOfType<MarketCtrl>();
+                if (obj != null)
+                {
+                    instance = obj;
+                }
+                else
+                {
+                    var newSingleton = new GameObject("Singleton Class").AddComponent<MarketCtrl>();
+                    instance = newSingleton;
+                }
+            }
+            return instance;
         }
-        else
+        private set
         {
-            Debug.Log("선인장 수류탄을 구입했습니다!");
-            PlayerMove.Instance.playerGold -= cactusGrenadeBuyGold;
-            PlayerMove.Instance.cactusGrenade += 1f;
+            instance = value;
         }
     }
 }
