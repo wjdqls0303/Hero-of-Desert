@@ -4,10 +4,12 @@ ScriptsOnlyBuild:
     - CameraPosition
     - EnemyDetector
     - EnemyMove
+    - FoxMove
     - GameManager
     - MarketCtrl
     - PlayerMove
     - SpawnManager
+    - TextFade
     - cactusGrenadeCtrl
     Unity.RenderPipelines.Core.Runtime.dll:
     - UnityEngine.Rendering.UI.DebugUIHandlerBitField
@@ -62,6 +64,100 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
+    Assets/Scenes/Clear.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1568}
+    - Class: 114
+      Script: {instanceID: 1570}
+    - Class: 114
+      Script: {instanceID: 1572}
+    - Class: 114
+      Script: {instanceID: 3028}
+    - Class: 114
+      Script: {instanceID: 6678}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    Assets/Scenes/GameOver.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 1568}
+    - Class: 114
+      Script: {instanceID: 1570}
+    - Class: 114
+      Script: {instanceID: 1572}
+    - Class: 114
+      Script: {instanceID: 3028}
+    - Class: 114
+      Script: {instanceID: 3232}
+    - Class: 114
+      Script: {instanceID: 3828}
+    - Class: 114
+      Script: {instanceID: 6678}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
     Assets/Scenes/Main.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -187,6 +283,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 4630}
     - Class: 114
       Script: {instanceID: 4728}
+    - Class: 114
+      Script: {instanceID: 5088}
     - Class: 114
       Script: {instanceID: 5176}
     - Class: 114
@@ -648,7 +746,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: bb18d4bb63346f608f7f3a0855287325
+      Hash: 722200bb13ee6842c598d51f1441b656
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MarketCtrl
@@ -720,7 +818,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 63b75508ea746a28a41e5aaf048fa3f5
+      Hash: 35652a711a48206a537f31caf168d24b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -930,7 +1028,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: fdf3d05c9f4806e9b2a1aee0fccf4c91
+      Hash: c466c64fa0a4dbabf1f4b02c4636fa15
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMove
@@ -978,7 +1076,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 82fac3aa14e2bd631ac682db37e50a5a
+      Hash: b9a5cf91bc9fcc72b3c565adc278abc4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpawnManager
@@ -1110,7 +1208,7 @@ ScriptsOnlyBuild:
     className: UniversalAdditionalLightData
   - hash:
       serializedVersion: 2
-      Hash: f2e467e297292e12eae659a1e0426b49
+      Hash: 951dab27fac927f791cd4fb9f2733c01
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EnemyMove
@@ -1396,8 +1494,16 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
+  - hash:
+      serializedVersion: 2
+      Hash: a859d9238dc849ac7cf41cabef440331
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TextFade
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main.unity
+  - Assets/Scenes/GameOver.unity
+  - Assets/Scenes/Clear.unity
   playerPath: "C:/Users/USER/OneDrive/\uBC14\uD0D5 \uD654\uBA74/\uACFC\uBAA9 \uD30C\uC77C2/\uC5D4\uC9C4\uC751\uC6A9/4\uCC28
     \uC218\uD589\uD3C9\uAC00/20408_UnityProject.exe"

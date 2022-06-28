@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -127,6 +128,7 @@ public class PlayerMove : MonoBehaviour
         ckAnimationState();
         ItemNum();
     }
+
     /// <summary>
     /// 캐릭터 이동 함수
     /// </summary>
@@ -370,7 +372,10 @@ public class PlayerMove : MonoBehaviour
         if (collision.transform.CompareTag(EnemyTag))
         {
             Debug.Log("Atk");
-            playerHp -= 10f;
+            if (playerHp <= 10)
+                SceneManager.LoadScene("GameOver");
+            else if(playerHp > 0)
+                playerHp -= 10f;
         }
     }
 }

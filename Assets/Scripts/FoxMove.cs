@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Holoville.HOTween;
+using UnityEngine.SceneManagement;
 
 public class FoxMove : MonoBehaviour
 {
@@ -152,7 +153,7 @@ public class FoxMove : MonoBehaviour
         if (targetCharactor == null)
         {
             posTarget = new Vector3(FoxTransform.position.x + Random.Range(-10f, 10f),
-                                    FoxTransform.position.y,
+                                    FoxTransform.position.y + 10f,
                                     FoxTransform.position.z + Random.Range(-10f, 10f)
                 );
             Ray ray = new Ray(posTarget, Vector3.down);
@@ -357,6 +358,7 @@ public class FoxMove : MonoBehaviour
                 foxState = FoxState.Die;
                 Debug.Log("공격당했따");
                 PlayerMove.Instance.playerGold += enemyGold;
+                SceneManager.LoadScene("Clear");
             }
         }
     }

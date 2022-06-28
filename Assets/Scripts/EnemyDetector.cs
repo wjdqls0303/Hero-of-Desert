@@ -6,6 +6,7 @@ public class EnemyDetector : MonoBehaviour
 {
     //Trigger를 통해서 찾고자 하는 목표 Tag 설정
     public string targetTag = string.Empty;
+    public float shpereSize;
 
     //Trigger 안에 들어왔냐?
     private void Start()
@@ -24,7 +25,7 @@ public class EnemyDetector : MonoBehaviour
     }*/
     private void Update()
     {
-        Collider[] cols = Physics.OverlapSphere(transform.position, 10);
+        Collider[] cols = Physics.OverlapSphere(transform.position, shpereSize);
         foreach (Collider col in cols)
         {
             if (col.gameObject.CompareTag(targetTag))

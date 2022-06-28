@@ -12,13 +12,49 @@ public class GameManager : MonoBehaviour
     public Text hpCount;
     public Text boosHpCount;
     public GameObject boosHp;
+    public GameObject TutorialText;
+    public GameObject EnemyText;
+    public Text KillCountText;
     public float waitSeconds = 1.0f;
+
+
+    private void Start()
+    {
+        TutorialT();
+        EnemyT();
+    }
 
     void Update()
     {
         GoldText();
         cactusGrenadeText();
         HPText();
+        KillCount();
+    }
+
+    IEnumerator Tutorialview()
+    {
+        TutorialText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(3.0f);
+        TutorialText.gameObject.SetActive(false);
+    }
+
+    IEnumerator Enemyview()
+    {
+        yield return new WaitForSecondsRealtime(3.0f);
+        EnemyText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(3.0f);
+        EnemyText.gameObject.SetActive(false);
+    }
+
+    void EnemyT()
+    {
+        StartCoroutine(Enemyview());
+    }
+
+    void TutorialT()
+    {
+        StartCoroutine(Tutorialview());
     }
 
     void cactusGrenadeText()
@@ -34,6 +70,11 @@ public class GameManager : MonoBehaviour
     void HPText()
     {
         hpCount.text = PlayerMove.Instance.playerHp + " : HP";
+    }
+
+    void KillCount()
+    {
+        KillCountText.text = "10 / " + PlayerMove.Instance.killEnemy;
     }
 
     public void BossHpText(int hp)

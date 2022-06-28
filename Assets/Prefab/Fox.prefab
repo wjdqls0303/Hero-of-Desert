@@ -560,7 +560,7 @@ Transform:
   m_GameObject: {fileID: 5126492000991619865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 3747896229447624824}
   - {fileID: 8107218919249069022}
@@ -659,12 +659,12 @@ MonoBehaviour:
   MoveAnimClip: {fileID: 7400000, guid: 379f8e1c6ff73364db05cb2e54352fb8, type: 2}
   AtkAnimClip: {fileID: 7400000, guid: f646105713356494f95b4f7836c7658e, type: 2}
   DieAnimClip: {fileID: 7400000, guid: 1665ffdac5bcd7246963d1b757ac859d, type: 2}
-  hp: 250
+  hp: 200
   AtkRange: 4.5
   DetectorRange: 100
   effectDamage: {fileID: 0}
   effectDie: {fileID: 0}
-  enemyGold: 9999
+  enemyGold: 750
 --- !u!1 &5177824720547237973
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,6 +1293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: Player
+  shpereSize: 100
 --- !u!1 &8510003112984379750
 GameObject:
   m_ObjectHideFlags: 0

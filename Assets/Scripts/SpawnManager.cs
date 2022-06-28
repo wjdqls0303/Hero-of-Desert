@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     public List<GameObject> monsters = new List<GameObject>();
 
     //생성할 몬스터 최대수
-    public int spawnMaxCnt = 5;
+    public int spawnMaxCnt = 10;
 
     //생성할 몬스터 랜덤 좌표 (x,z)위치
     float rndPos = 10f;
@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
 
     void Spawn()
     {
-        if (PlayerMove.Instance.killEnemy <= 5)
+        if (PlayerMove.Instance.killEnemy <= 10)
         {
             //몬스터 수가 생성할 몬스터 최대수 보다 크면 돌아가~
             if (monsters.Count >= spawnMaxCnt)

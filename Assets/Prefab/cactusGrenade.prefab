@@ -172,4 +172,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwSpd: 3
   enemyTag: Enemy
-  waitingTime: 0.5
+  waitingTime: 2

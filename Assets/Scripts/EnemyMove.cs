@@ -23,6 +23,8 @@ public class EnemyMove : MonoBehaviour
     public Transform targetTransform = null;
     //좀비이 본 타겟 위치(매번 안 찾을려)
     public Vector3 posTarget = Vector3.zero;
+    public CapsuleCollider BodyCollider = null;
+    public bool enemyCheck = false;
 
     //좀비 애니메이션 컴포넌트 캐싱 
     private Animation ZombieAnimation = null;
@@ -30,7 +32,7 @@ public class EnemyMove : MonoBehaviour
     private Transform ZombieTransform = null;
 
     [Header("애니메이션 클립")]
-    public AnimationClip IdleAnimClip = null;
+    public AnimationClip IdleAnimClip = null;   
     public AnimationClip MoveAnimClip = null;
     public AnimationClip AtkAnimClip = null;
     public AnimationClip DieAnimClip = null;
@@ -44,11 +46,6 @@ public class EnemyMove : MonoBehaviour
     public float DetectorRange = 10.0f;
     //좀비 피격 이펙트
     public GameObject effectDamage = null;
-    //좀비 다이 이펙트
-    public GameObject effectDie = null;
-    //좀비 공격 콜라이더
-    //public CapsuleCollider AtkCapsuleColliderR = null;
-    //public CapsuleCollider AtkCapsuleColliderL = null;
 
     [Header("캐릭터 속성")]
     public float enemyGold = 10f;
@@ -66,15 +63,15 @@ public class EnemyMove : MonoBehaviour
     void OnDieAnmationFinished()
     {
         //Debug.Log("Die Animation finished");
+        //enemyCheck = false;
         StartCoroutine(Die());
     }
 
     IEnumerator Die()
     {
+        BodyCollider.enabled = false;
         yield return new WaitForSeconds(Delaysecond);
-        //아이템 얻기
-        Refresh();
-        zombieState = ZombieState.Idle;
+        Destroy(gameObject);
     }
 
     void Destroyed()
@@ -86,12 +83,12 @@ public class EnemyMove : MonoBehaviour
     /// <summary>
     /// 좀비 재활용
     /// </summary>
-    void Refresh()
-    {
-        float posX = Random.Range(10f, -10f);
-        float posZ = Random.Range(10f, -10f);
-        transform.position = new Vector3(posX, 15, posZ);
-    }
+    //void Refresh()
+    //{
+    //    float posX = Random.Range(10f, -10f);
+    //    float posZ = Random.Range(10f, -10f);
+    //    transform.position = new Vector3(posX, 15, posZ);
+    //}
 
     /// <summary>
     /// 애니메이션 이벤트를 추가해주는 함. 
@@ -120,6 +117,8 @@ public class EnemyMove : MonoBehaviour
         //애니메이, 트랜스폼 컴포넌트 캐싱 : 쓸때마다 찾아 만들지 않게
         ZombieAnimation = GetComponent<Animation>();
         ZombieTransform = GetComponent<Transform>();
+        BodyCollider = GetComponent<CapsuleCollider>();
+        
 
         //애니메이션 클립 재생 모드 비중
         ZombieAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
@@ -325,6 +324,7 @@ public class EnemyMove : MonoBehaviour
             //죽었을 때
             case ZombieState.Die:
                 //죽을 때도 애니메이션 실행
+                PlayerMove.Instance.killEnemy += 1;
                 ZombieAnimation.CrossFade(DieAnimClip.name);
                     OnDieAnmationFinished();
                 break;
@@ -367,6 +367,7 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// 좀비 피격 충돌 검출
     /// </summary>
@@ -387,7 +388,7 @@ public class EnemyMove : MonoBehaviour
             {
                 zombieState = ZombieState.Die;
                 PlayerMove.Instance.playerGold += enemyGold;
-                PlayerMove.Instance.killEnemy += 1;
+                BodyCollider.enabled = false;
             }
         }
     }
