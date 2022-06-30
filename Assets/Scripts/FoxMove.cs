@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Holoville.HOTween;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class FoxMove : MonoBehaviour
+public class FoxMove : MonoBehaviour, IHittable
 {
     private float Delaysecond = 0.665f;
     public string targetTag = string.Empty;
@@ -44,9 +45,7 @@ public class FoxMove : MonoBehaviour
     //여우 감지거리
     public float DetectorRange = 10.0f;
     //여우 피격 이펙트
-    public Material effectDamage = null;
-    //여우 다이 이펙트
-    public GameObject effectDie = null;
+    public GameObject effectDamage = null;
 
     [Header("캐릭터 속성")]
     public float enemyGold = 10f;
@@ -113,6 +112,8 @@ public class FoxMove : MonoBehaviour
         //공격 애니메이션 이벤트 추가
         OnAnimationEvent(AtkAnimClip, "OnAtkAnmationFinished");
         OnAnimationEvent(DieAnimClip, "OnDieAnmationFinished");
+
+        GameManager.Instance.BossHpText(hp);
     }
 
     /// <summary>
@@ -346,21 +347,28 @@ public class FoxMove : MonoBehaviour
         //만약에 여우이 캐릭터 공격에 맞았다면
         if (collision.gameObject.CompareTag(targetTag))
         {
-            //여우 체력을 10빼고
-            hp -= 10;
             GameManager.Instance.BossHpText(hp);
             Debug.Log("뺏다");
             if (hp > 0)
-                //Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
-                return;
+            {
+                //여우 체력을 10빼고
+                hp -= 10;
+                Instantiate(effectDamage, collision.transform.position, Quaternion.identity);
+            }
             else
             {
                 foxState = FoxState.Die;
                 Debug.Log("공격당했따");
                 PlayerMove.Instance.playerGold += enemyGold;
-                SceneManager.LoadScene("Clear");
+                StartCoroutine(clear());
             }
         }
+    }
+
+    IEnumerator clear()
+    {
+        yield return new WaitForSeconds(Delaysecond);
+        SceneManager.LoadScene("Clear");
     }
 
     private static FoxMove instance;
@@ -386,6 +394,29 @@ public class FoxMove : MonoBehaviour
         private set
         {
             instance = value;
+        }
+    }
+
+    /// <summary>
+    ///  맞았을 때
+    /// </summary>
+    public void GetHit()
+    {
+        Debug.Log("실행됨");
+        //좀비를 즉사시킨다.
+        if (hp > 0)
+        {
+            hp -= 30;
+            Debug.Log("Effect");
+            Instantiate(effectDamage, transform.position, Quaternion.identity);
+            GameManager.Instance.BossHpText(hp);
+        }
+        else
+        {
+            foxState = FoxState.Die;
+            Debug.Log("공격당했따");
+            PlayerMove.Instance.playerGold += enemyGold;
+            StartCoroutine(clear());
         }
     }
 }

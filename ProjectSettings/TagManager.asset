@@ -8,14 +8,15 @@ TagManager:
   - Detector
   - cactusGrenade
   - Enemy
+  - BossEnemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BOOM
   - Water
   - UI
-  - 
+  - POST
   - 
   - 
   - 

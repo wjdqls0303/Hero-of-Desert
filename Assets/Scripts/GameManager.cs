@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
 
     public void BossHpText(int hp)
     {
+        if (hp < 0)
+            hp = hp * 0;
         boosHpCount.text = hp + " : HP";
         Debug.Log(FoxMove.Instance.hp);
     }

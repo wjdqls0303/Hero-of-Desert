@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8509873365488807024}
   - component: {fileID: 2953063854156408426}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ExplosionRange
   m_TagString: cactusGrenade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8509873365488807024
 Transform:
   m_ObjectHideFlags: 0
@@ -57,10 +57,10 @@ GameObject:
   - component: {fileID: 666781200480043506}
   - component: {fileID: 2151130538492898817}
   - component: {fileID: 2356990374199338082}
-  - component: {fileID: 3012263233306391654}
-  m_Layer: 0
+  - component: {fileID: 1119213351684076076}
+  m_Layer: 3
   m_Name: cactusGrenade
-  m_TagString: Untagged
+  m_TagString: cactusGrenade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2356990374199338082
 Rigidbody:
@@ -158,7 +158,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3012263233306391654
+--- !u!114 &1119213351684076076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,4 +172,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwSpd: 3
   enemyTag: Enemy
-  waitingTime: 2
+  grenadeTag: cactusGrenade
+  waitingTime: 0
+  explosionRange: 8

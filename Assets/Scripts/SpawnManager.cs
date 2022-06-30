@@ -1,31 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
-    //생성할 몬스터 오브젝트
+    //생성할 아이템 오브젝트
     public GameObject monsterSpawner = null;
 
-    //생성활 몬스터들 담아놓기
+    //생성활 아이템들 담아놓기
     public List<GameObject> monsters = new List<GameObject>();
 
-    //생성할 몬스터 최대수
+    //생성할 아이템 최대수
     public int spawnMaxCnt = 10;
 
-    //생성할 몬스터 랜덤 좌표 (x,z)위치
+    //생성할 아이템 랜덤 좌표 (x,z)위치
     float rndPos = 10f;
 
-    //생성할 보스몬스터
+    //생성할 보스아이템
     public GameObject bossMonster = null;
 
     public bool foxSpawnCheck = false;
 
     void Spawn()
     {
-        if (PlayerMove.Instance.killEnemy <= 10)
+        if (PlayerMove.Instance.killEnemy < 10)
         {
-            //몬스터 수가 생성할 몬스터 최대수 보다 크면 돌아가~
+            //아이템 수가 생성할 아이템 최대수 보다 크면 돌아가~
             if (monsters.Count >= spawnMaxCnt)
             {
                 return;
@@ -45,10 +46,10 @@ public class SpawnManager : MonoBehaviour
                 vecSpawn.y = raycastHit.point.y;
             }
 
-            //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
+            //생성할 새로운 아이템를 Instantiate로 clone을 만든다.
             GameObject newMonster = Instantiate(monsterSpawner, vecSpawn, Quaternion.identity);
 
-            //몬스터 목록에 새로운 몬스터를 추가
+            //아이템 목록에 새로운 아이템를 추가
             monsters.Add(newMonster);
         }
         else if (foxSpawnCheck == false)
@@ -65,7 +66,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        //반복적으로 몬스터를 만든다 InvokeRepeating
+        //반복적으로 아이템를 만든다 InvokeRepeating
         InvokeRepeating("Spawn", 0.5f, 2f);
         foxSpawnCheck = false;
     }

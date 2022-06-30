@@ -246,7 +246,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Height: 2.21
   m_Direction: 1
   m_Center: {x: 0, y: 0.98, z: 0}
@@ -294,10 +294,10 @@ MonoBehaviour:
   MoveAnimClip: {fileID: 7400000, guid: f46df6856d8d7ad4f83c0855269a0264, type: 2}
   AtkAnimClip: {fileID: 7400000, guid: da2e91e95e214c74dae177fd1003f6c6, type: 2}
   DieAnimClip: {fileID: 7400000, guid: 5f7857b6c16566e468eb2ef418c679d2, type: 2}
-  hp: 50
+  hp: 20
   AtkRange: 1.75
   DetectorRange: 100
-  effectDamage: {fileID: 0}
+  effectDamage: {fileID: 1000012909287652, guid: 1641e4c1264d9144e9eafacc926e86c7, type: 3}
   enemyGold: 25
 --- !u!1 &673305973077175769
 GameObject:
@@ -727,7 +727,7 @@ GameObject:
   - component: {fileID: 6958971009437429691}
   - component: {fileID: 4415268974394774577}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3083,6 +3083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4669573966862090581}
   - component: {fileID: 3355116288949098851}
+  - component: {fileID: 2115679767998895881}
   m_Layer: 0
   m_Name: AtkRange
   m_TagString: Untagged
@@ -3112,12 +3113,27 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8927880707475866873}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2115679767998895881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927880707475866873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905a97d56c5e9a7419dac4feb9b54619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 2
+  delay: 0
+  maxDelay: 5
 --- !u!1 &9022582027071975830
 GameObject:
   m_ObjectHideFlags: 0

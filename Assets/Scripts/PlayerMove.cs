@@ -350,7 +350,6 @@ public class PlayerMove : MonoBehaviour
         pos = this.gameObject.transform.position;
         if (currentCnt >= spawnMaxCnt)
         {
-
             return;
         }
 
@@ -360,22 +359,31 @@ public class PlayerMove : MonoBehaviour
         //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
         Ray ray = new Ray(vecSpawn, Vector3.down);
 
-        //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
+        //생성할 새로운 아이템를 Instantiate로 clone을 만든다.
         GameObject newMonster = Instantiate(cactusGrenadeIns, vecSpawn, Quaternion.identity);
 
-        //아이템 목록에 새로운 몬스터를 추가
+        //아이템 목록에 새로운 아이템를 추가
         currentCnt++;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.transform.CompareTag(EnemyTag))
+    //    {
+    //        Debug.Log("Atk");
+    //        if (playerHp <= 10)
+    //            SceneManager.LoadScene("GameOver");
+    //        else if(playerHp > 0)
+    //            playerHp -= 10f;
+    //    }
+    //}
+
+    public void TakeDamage(float damage)
     {
-        if (collision.transform.CompareTag(EnemyTag))
+        playerHp -= damage;
+        if (playerHp <= 0)
         {
-            Debug.Log("Atk");
-            if (playerHp <= 10)
-                SceneManager.LoadScene("GameOver");
-            else if(playerHp > 0)
-                playerHp -= 10f;
+            SceneManager.LoadScene("GameOver");
         }
     }
 }

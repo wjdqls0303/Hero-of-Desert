@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Holoville.HOTween;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMove : MonoBehaviour, IHittable
 {
     private float Delaysecond = 1.11f;
     public string targetTag = string.Empty;
@@ -32,7 +32,7 @@ public class EnemyMove : MonoBehaviour
     private Transform ZombieTransform = null;
 
     [Header("애니메이션 클립")]
-    public AnimationClip IdleAnimClip = null;   
+    public AnimationClip IdleAnimClip = null;
     public AnimationClip MoveAnimClip = null;
     public AnimationClip AtkAnimClip = null;
     public AnimationClip DieAnimClip = null;
@@ -118,7 +118,7 @@ public class EnemyMove : MonoBehaviour
         ZombieAnimation = GetComponent<Animation>();
         ZombieTransform = GetComponent<Transform>();
         BodyCollider = GetComponent<CapsuleCollider>();
-        
+
 
         //애니메이션 클립 재생 모드 비중
         ZombieAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
@@ -294,7 +294,7 @@ public class EnemyMove : MonoBehaviour
         //대기 후 다시 준비 상태로 변경
         zombieState = ZombieState.Move;
     }
-
+    bool _isDead = false;
     /// <summary>
     /// 애니메이션을 재생시켜주는 함 
     /// </summary>
@@ -314,7 +314,7 @@ public class EnemyMove : MonoBehaviour
             case ZombieState.GoTarget:
                 ZombieAnimation.CrossFade(MoveAnimClip.name);
                 //이동 애니메이션 실행
-                
+
                 break;
             //공격할 때
             case ZombieState.Atk:
@@ -324,9 +324,11 @@ public class EnemyMove : MonoBehaviour
             //죽었을 때
             case ZombieState.Die:
                 //죽을 때도 애니메이션 실행
+                if (_isDead) return;
                 PlayerMove.Instance.killEnemy += 1;
+                _isDead = true;
                 ZombieAnimation.CrossFade(DieAnimClip.name);
-                    OnDieAnmationFinished();
+                OnDieAnmationFinished();
                 break;
             default:
                 break;
@@ -390,6 +392,28 @@ public class EnemyMove : MonoBehaviour
                 PlayerMove.Instance.playerGold += enemyGold;
                 BodyCollider.enabled = false;
             }
+        }
+
+    }
+
+    /// <summary>
+    ///  맞았을 때
+    /// </summary>
+    public void GetHit()
+    {
+        Debug.Log("실행됨");
+        //좀비를 즉사시킨다.
+        if (hp > 0)
+        {
+            hp -= 30;
+            Debug.Log("Effect");
+            Instantiate(effectDamage, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            zombieState = ZombieState.Die;
+            PlayerMove.Instance.playerGold += enemyGold;
+            BodyCollider.enabled = false;
         }
     }
 }
